@@ -7,192 +7,31 @@
     <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.3/build/cjs/vexflow.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pitchfinder@2.3.0/dist/pitchfinder.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        
-        h1 {
-            text-align: center;
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 2.5em;
-        }
-        
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 40px;
-            font-size: 1.1em;
-        }
-        
-        .upload-area {
-            border: 3px dashed #667eea;
-            border-radius: 15px;
-            padding: 60px 20px;
-            text-align: center;
-            background: #f8f9ff;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 30px;
-        }
-        
-        .upload-area:hover {
-            border-color: #764ba2;
-            background: #f0f1ff;
-        }
-        
-        .upload-area.dragover {
-            background: #e8eaff;
-            border-color: #764ba2;
-        }
-        
-        .upload-icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-        }
-        
-        input[type="file"] {
-            display: none;
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 30px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: transform 0.2s;
-            margin: 10px;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .controls {
-            text-align: center;
-            margin: 30px 0;
-        }
-        
-        .status {
-            text-align: center;
-            padding: 20px;
-            background: #f0f1ff;
-            border-radius: 10px;
-            margin: 20px 0;
-            display: none;
-        }
-        
-        .status.show {
-            display: block;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 20px 0;
-            display: none;
-        }
-        
-        .progress-bar.show {
-            display: block;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            width: 0%;
-            transition: width 0.3s;
-        }
-        
-        #sheetMusic {
-            margin-top: 40px;
-            padding: 30px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            overflow-x: auto;
-            display: none;
-        }
-        
-        #sheetMusic.show {
-            display: block;
-        }
-        
-        .settings {
-            background: #f8f9ff;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        
-        .settings label {
-            display: block;
-            margin: 15px 0 5px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .settings select, .settings input[type="range"] {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-        
-        .range-value {
-            display: inline-block;
-            margin-left: 10px;
-            color: #667eea;
-            font-weight: 600;
-        }
-        
-        .info-box {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        
-        .info-box h3 {
-            color: #856404;
-            margin-bottom: 10px;
-        }
-        
-        .info-box ul {
-            margin-left: 20px;
-            color: #856404;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        h1 { text-align: center; color: #667eea; margin-bottom: 10px; font-size: 2.5em; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 40px; font-size: 1.1em; }
+        .upload-area { border: 3px dashed #667eea; border-radius: 15px; padding: 60px 20px; text-align: center; background: #f8f9ff; cursor: pointer; margin-bottom: 30px; }
+        .btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px 40px; border-radius: 30px; font-size: 1.1em; cursor: pointer; margin: 10px; transition: transform 0.2s; }
+        .btn:hover { transform: translateY(-2px); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .controls { text-align: center; margin: 30px 0; }
+        .status { text-align: center; padding: 20px; background: #f0f1ff; border-radius: 10px; margin: 20px 0; display: none; }
+        .status.show { display: block; }
+        .progress-bar { width: 100%; height: 8px; background: #e0e0e0; border-radius: 10px; overflow: hidden; margin: 20px 0; display: none; }
+        .progress-bar.show { display: block; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); width: 0%; transition: width 0.3s; }
+        #sheetMusic { margin-top: 40px; padding: 30px; background: #fff; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); display: none; overflow-x: auto; }
+        #sheetMusic.show { display: block; }
+        .settings { background: #f8f9ff; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .settings label { display: block; margin: 15px 0 5px; font-weight: 600; color: #333; }
+        .settings input[type="text"], .settings select, .settings input[type="range"] { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; }
+        .range-value { display: inline-block; margin-left: 10px; color: #667eea; font-weight: 600; }
+        .info-box { background: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 8px; margin: 20px 0; color: #856404; }
     </style>
 </head>
 <body>
@@ -203,32 +42,34 @@
         <div class="info-box">
             <h3>💡 사용 팁</h3>
             <ul>
-                <li>단순한 멜로디일수록 정확도가 높습니다</li>
-                <li>보컬만 있거나 악기가 적은 음원이 좋습니다</li>
-                <li>너무 긴 음원(3분 이상)은 처리 시간이 오래 걸릴 수 있습니다</li>
+                <li>단순한 멜로디일수록 정확도가 높습니다.</li>
+                <li><strong>쉬움</strong> 난이도는 멜로디의 뼈대만, <strong>어려움</strong>은 세밀한 기교까지 잡아냅니다.</li>
             </ul>
         </div>
         
         <div class="upload-area" id="uploadArea">
             <div class="upload-icon">📁</div>
             <h2>음원 파일을 선택하거나 드래그하세요</h2>
-            <p style="margin-top: 10px; color: #666;">지원 형식: MP3, WAV, OGG, M4A</p>
-            <input type="file" id="audioFile" accept="audio/*">
+            <input type="file" id="audioFile" accept="audio/*" style="display:none;">
         </div>
         
         <div class="settings">
+            <h3 style="margin-bottom: 15px;">📝 악보 정보 입력</h3>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <div style="flex: 1;">
+                    <label>곡 제목</label>
+                    <input type="text" id="sheetTitle" placeholder="예: My Suno Song">
+                </div>
+                <div style="flex: 1;">
+                    <label>아티스트 / 작곡가</label>
+                    <input type="text" id="sheetArtist" placeholder="예: Suno AI">
+                </div>
+            </div>
+
             <h3 style="margin-bottom: 15px;">⚙️ 변환 설정</h3>
-            
             <label>분석 민감도</label>
             <input type="range" id="sensitivity" min="0.3" max="0.9" step="0.1" value="0.6">
             <span class="range-value" id="sensitivityValue">0.6</span>
-            
-            <label>음표 길이 단위</label>
-            <select id="noteUnit">
-                <option value="16">16분음표</option>
-                <option value="8" selected>8분음표</option>
-                <option value="4">4분음표</option>
-            </select>
             
             <label>박자</label>
             <select id="timeSignature">
@@ -236,327 +77,225 @@
                 <option value="3/4">3/4박자</option>
                 <option value="6/8">6/8박자</option>
             </select>
+
+            <label>악보 난이도</label>
+            <select id="difficulty">
+                <option value="easy">쉬움 (심플한 멜로디)</option>
+                <option value="normal" selected>보통 (기본 멜로디)</option>
+                <option value="hard">어려움 (정밀한 분석)</option>
+            </select>
         </div>
         
         <div class="controls">
             <button class="btn" id="convertBtn" disabled>🎼 악보로 변환</button>
-            <button class="btn" id="downloadBtn" style="display: none;">💾 악보 다운로드 (PNG)</button>
         </div>
         
-        <div class="progress-bar" id="progressBar">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-        
+        <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
         <div class="status" id="status"></div>
-        
         <div id="sheetMusic"></div>
     </div>
 
     <script>
         const VF = Vex.Flow;
         let audioBuffer = null;
-        let currentFile = null;
-        
-        // UI 요소
+        let pianoNotes = [];
+        let synth = null;
+
+        const controls = document.querySelector('.controls');
         const uploadArea = document.getElementById('uploadArea');
         const audioFileInput = document.getElementById('audioFile');
         const convertBtn = document.getElementById('convertBtn');
-        const downloadBtn = document.getElementById('downloadBtn');
         const statusDiv = document.getElementById('status');
         const sheetMusicDiv = document.getElementById('sheetMusic');
         const progressBar = document.getElementById('progressBar');
         const progressFill = document.getElementById('progressFill');
-        
-        // 설정
-        const sensitivityInput = document.getElementById('sensitivity');
-        const sensitivityValue = document.getElementById('sensitivityValue');
-        const noteUnitSelect = document.getElementById('noteUnit');
-        const timeSignatureSelect = document.getElementById('timeSignature');
-        
-        sensitivityInput.addEventListener('input', (e) => {
-            sensitivityValue.textContent = e.target.value;
-        });
-        
-        // 파일 업로드 처리
+
+        // 버튼 생성
+        const playBtn = document.createElement('button');
+        playBtn.className = 'btn'; playBtn.innerHTML = '▶️ 전체 악보 들어보기'; playBtn.style.display = 'none';
+        playBtn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+
+        const pdfBtn = document.createElement('button');
+        pdfBtn.className = 'btn'; pdfBtn.innerHTML = '📄 PDF로 저장'; pdfBtn.style.display = 'none';
+        pdfBtn.style.background = 'linear-gradient(135deg, #FF512F 0%, #DD2476 100%)';
+
+        controls.appendChild(playBtn);
+        controls.appendChild(pdfBtn);
+
         uploadArea.addEventListener('click', () => audioFileInput.click());
-        
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.classList.add('dragover');
-        });
-        
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.classList.remove('dragover');
-        });
-        
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.classList.remove('dragover');
-            const file = e.dataTransfer.files[0];
-            if (file && file.type.startsWith('audio/')) {
-                handleFile(file);
-            }
-        });
-        
-        audioFileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                handleFile(file);
-            }
-        });
-        
+        audioFileInput.addEventListener('change', e => { if(e.target.files[0]) handleFile(e.target.files[0]); });
+
         async function handleFile(file) {
-            currentFile = file;
             showStatus(`📂 ${file.name} 로딩 중...`);
-            
             try {
                 const arrayBuffer = await file.arrayBuffer();
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-                
-                showStatus(`✅ 파일 로딩 완료! (${audioBuffer.duration.toFixed(1)}초)`);
+                showStatus(`✅ 로딩 완료! (${audioBuffer.duration.toFixed(1)}초)`);
                 convertBtn.disabled = false;
-            } catch (error) {
-                showStatus(`❌ 오류: ${error.message}`, true);
-            }
+            } catch (e) { showStatus("❌ 파일 읽기 실패", true); }
         }
-        
-        convertBtn.addEventListener('click', convertToSheet);
-        
-        async function convertToSheet() {
+
+        convertBtn.addEventListener('click', convertToFullSheet);
+
+        async function convertToFullSheet() {
             if (!audioBuffer) return;
-            
             convertBtn.disabled = true;
-            sheetMusicDiv.classList.remove('show');
-            downloadBtn.style.display = 'none';
+            playBtn.style.display = 'none';
+            pdfBtn.style.display = 'none';
             progressBar.classList.add('show');
-            
-            showStatus('🎵 음원 분석 중...');
-            updateProgress(10);
-            
-            try {
-                // 오디오 데이터 추출
-                const channelData = audioBuffer.getChannelData(0);
-                const sampleRate = audioBuffer.sampleRate;
-                
-                updateProgress(30);
-                showStatus('🎼 음높이 감지 중...');
-                
-                // 피치 검출
-                const notes = await detectPitches(channelData, sampleRate);
-                
-                updateProgress(60);
-                showStatus('📝 악보 생성 중...');
-                
-                // 악보 렌더링
-                renderSheet(notes);
-                
-                updateProgress(100);
-                showStatus('✅ 변환 완료!');
-                
-                sheetMusicDiv.classList.add('show');
-                downloadBtn.style.display = 'inline-block';
-                
-                setTimeout(() => {
-                    progressBar.classList.remove('show');
-                }, 1000);
-                
-            } catch (error) {
-                showStatus(`❌ 변환 오류: ${error.message}`, true);
-                console.error(error);
-            } finally {
-                convertBtn.disabled = false;
-            }
-        }
-        
-        async function detectPitches(channelData, sampleRate) {
-            const sensitivity = parseFloat(sensitivityInput.value);
-            const hopSize = 512;
-            const notes = [];
-            
-            // 간단한 zero-crossing 기반 피치 검출
-            for (let i = 0; i < channelData.length - hopSize; i += hopSize) {
+            showStatus("🎵 음원 분석 중...");
+
+            const channelData = audioBuffer.getChannelData(0);
+            const sampleRate = audioBuffer.sampleRate;
+            const detector = Pitchfinder.YIN({ sampleRate });
+            const hopSize = 2048;
+            const detected = [];
+
+            const sensitivity = parseFloat(document.getElementById('sensitivity').value);
+            const rmsThreshold = (1 - sensitivity) * 0.2; 
+
+            for (let i = 0; i < channelData.length; i += hopSize) {
                 const segment = channelData.slice(i, i + hopSize);
-                
-                // RMS (에너지) 계산
-                const rms = Math.sqrt(segment.reduce((sum, val) => sum + val * val, 0) / segment.length);
-                
-                if (rms > 0.01) { // 최소 음량 임계값
-                    // Zero-crossing rate로 대략적인 주파수 추정
-                    let crossings = 0;
-                    for (let j = 1; j < segment.length; j++) {
-                        if ((segment[j-1] >= 0 && segment[j] < 0) || (segment[j-1] < 0 && segment[j] >= 0)) {
-                            crossings++;
-                        }
+                const freq = detector(segment);
+                const rms = Math.sqrt(segment.reduce((s, v) => s + v*v, 0) / segment.length);
+                if (freq && rms > rmsThreshold) detected.push({ freq, time: i / sampleRate });
+                if (i % (hopSize * 100) === 0) updateProgress((i / channelData.length) * 100);
+            }
+
+            pianoNotes = processMelody(detected);
+            renderMultiLineSheet(pianoNotes);
+            updateProgress(100);
+            showStatus(`✅ 변환 완료! 총 ${pianoNotes.length}개의 음표 추출.`);
+            convertBtn.disabled = false;
+        }
+
+        function processMelody(data) {
+            const processed = [];
+            let lastTime = -1;
+            const difficulty = document.getElementById('difficulty').value;
+            
+            let minGap;
+            switch(difficulty) {
+                case 'easy':   minGap = 0.6; break;
+                case 'normal': minGap = 0.35; break;
+                case 'hard':   minGap = 0.15; break;
+                default: minGap = 0.35;
+            }
+            
+            data.forEach(d => {
+                if (d.time - lastTime > minGap) {
+                    const note = frequencyToNote(d.freq);
+                    if (note.octave >= 3 && note.octave <= 6) {
+                        processed.push({ note, time: d.time });
+                        lastTime = d.time;
                     }
-                    
-                    const freq = (crossings / 2) * (sampleRate / hopSize);
-                    
-                    if (freq > 80 && freq < 1000) { // 유효한 주파수 범위
-                        const note = frequencyToNote(freq);
-                        const time = i / sampleRate;
-                        notes.push({ note, time, frequency: freq, energy: rms });
-                    }
                 }
-            }
-            
-            // 비슷한 시간의 노트들을 병합
-            return mergeNotes(notes);
-        }
-        
-        function frequencyToNote(freq) {
-            const A4 = 440;
-            const C0 = A4 * Math.pow(2, -4.75);
-            const halfSteps = Math.round(12 * Math.log2(freq / C0));
-            const octave = Math.floor(halfSteps / 12);
-            const noteIndex = halfSteps % 12;
-            const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-            
-            return {
-                name: noteNames[noteIndex],
-                octave: octave,
-                full: noteNames[noteIndex] + '/' + octave
-            };
-        }
-        
-        function mergeNotes(notes) {
-            if (notes.length === 0) return [];
-            
-            const noteUnit = parseInt(noteUnitSelect.value);
-            const minDuration = 0.1; // 최소 음표 길이 (초)
-            
-            const merged = [];
-            let current = notes[0];
-            let startTime = current.time;
-            
-            for (let i = 1; i < notes.length; i++) {
-                const timeDiff = notes[i].time - current.time;
-                
-                if (timeDiff > minDuration || notes[i].note.name !== current.note.name) {
-                    merged.push({
-                        ...current,
-                        duration: timeDiff,
-                        startTime: startTime
-                    });
-                    current = notes[i];
-                    startTime = notes[i].time;
-                }
-            }
-            
-            // 마지막 노트 추가
-            if (current) {
-                merged.push({
-                    ...current,
-                    duration: 0.5,
-                    startTime: startTime
-                });
-            }
-            
-            return merged.slice(0, 32); // 최대 32개 음표
-        }
-        
-        function renderSheet(notes) {
-            sheetMusicDiv.innerHTML = '';
-            
-            if (notes.length === 0) {
-                sheetMusicDiv.innerHTML = '<p style="text-align: center; color: #999;">검출된 음표가 없습니다. 민감도를 조절해보세요.</p>';
-                sheetMusicDiv.classList.add('show');
-                return;
-            }
-            
-            const width = Math.max(800, notes.length * 50 + 200);
-            const renderer = new VF.Renderer(sheetMusicDiv, VF.Renderer.Backends.SVG);
-            renderer.resize(width, 250);
-            const context = renderer.getContext();
-            
-            const stave = new VF.Stave(10, 40, width - 20);
-            stave.addClef('treble');
-            
-            const timeSignature = timeSignatureSelect.value;
-            stave.addTimeSignature(timeSignature);
-            
-            stave.setContext(context).draw();
-            
-            // VexFlow 노트로 변환
-            const vfNotes = notes.map(noteData => {
-                const noteName = noteData.note.name.replace('#', '#');
-                const octave = noteData.note.octave;
-                
-                // 음표 길이 결정 (간단하게 8분음표로 통일)
-                const duration = 'q'; // quarter note
-                
-                let keys = [`${noteName}/${octave}`];
-                
-                const staveNote = new VF.StaveNote({
-                    keys: keys,
-                    duration: duration,
-                    clef: 'treble'
-                });
-                
-                // 샾이 있으면 추가
-                if (noteName.includes('#')) {
-                    staveNote.addModifier(new VF.Accidental('#'), 0);
-                }
-                
-                return staveNote;
             });
-            
-            // 보이스 생성 및 렌더링
-            try {
-                const voice = new VF.Voice({
-                    num_beats: notes.length,
-                    beat_value: 4
-                });
-                voice.addTickables(vfNotes);
-                
-                const formatter = new VF.Formatter();
-                formatter.joinVoices([voice]).format([voice], width - 100);
-                
-                voice.draw(context, stave);
-            } catch (error) {
-                console.error('악보 렌더링 오류:', error);
+            return processed;
+        }
+
+        function frequencyToNote(freq) {
+            const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+            const halfSteps = Math.round(12 * Math.log2(freq / 440) + 69);
+            const name = noteNames[halfSteps % 12];
+            const octave = Math.floor(halfSteps / 12) - 1;
+            return { name, octave, full: `${name}/${octave}` };
+        }
+
+        function renderMultiLineSheet(notes) {
+            sheetMusicDiv.innerHTML = '';
+            sheetMusicDiv.classList.add('show');
+            if (notes.length === 0) { showStatus("❌ 감지된 멜로디가 없습니다.", true); return; }
+
+            const title = document.getElementById('sheetTitle').value || "Untitled";
+            const artist = document.getElementById('sheetArtist').value || "Suno AI";
+            const timeSig = document.getElementById('timeSignature').value;
+
+            const notesPerMeasure = 4;
+            const measuresPerRow = 2;
+            const totalMeasures = Math.ceil(notes.length / notesPerMeasure);
+            const totalRows = Math.ceil(totalMeasures / measuresPerRow);
+
+            const renderer = new VF.Renderer(sheetMusicDiv, VF.Renderer.Backends.SVG);
+            const width = 800;
+            const headerHeight = 100;
+            const height = (totalRows * 150) + headerHeight + 50;
+            renderer.resize(width, height);
+            const context = renderer.getContext();
+
+            context.setFont("Arial", 22, "bold").fillText(title, width / 2 - (title.length * 5), 40);
+            context.setFont("Arial", 12, "normal").fillText("Artist: " + artist, width - 150, 70);
+
+            for (let m = 0; m < totalMeasures; m++) {
+                const row = Math.floor(m / measuresPerRow);
+                const col = m % measuresPerRow;
+                const x = col * (width / measuresPerRow) + 10;
+                const y = (row * 150) + headerHeight;
+
+                const stave = new VF.Stave(x, y, (width / measuresPerRow) - 20);
+                if (m === 0) stave.addClef('treble').addTimeSignature(timeSig);
+                else if (col === 0) stave.addClef('treble');
+                stave.setContext(context).draw();
+
+                const measureNotesData = notes.slice(m * notesPerMeasure, (m + 1) * notesPerMeasure);
+                if (measureNotesData.length > 0) {
+                    const vfNotes = measureNotesData.map(n => {
+                        const sn = new VF.StaveNote({ keys: [n.note.full], duration: "q" });
+                        if (n.note.name.includes('#')) sn.addModifier(new VF.Accidental('#'), 0);
+                        return sn;
+                    });
+                    const voice = new VF.Voice({ num_beats: measureNotesData.length, beat_value: 4 }).setStrict(false);
+                    voice.addTickables(vfNotes);
+                    new VF.Formatter().joinVoices([voice]).format([voice], (width / measuresPerRow) - 80);
+                    voice.draw(context, stave);
+                }
             }
+            playBtn.style.display = 'inline-block';
+            pdfBtn.style.display = 'inline-block';
         }
-        
-        downloadBtn.addEventListener('click', () => {
-            const svg = sheetMusicDiv.querySelector('svg');
-            if (!svg) return;
+
+        playBtn.addEventListener('click', async () => {
+            await Tone.start();
+            if (!synth) synth = new Tone.PolySynth(Tone.Synth).toDestination();
+            const now = Tone.now();
+            const difficulty = document.getElementById('difficulty').value;
+            const playGap = difficulty === 'hard' ? 0.3 : 0.5; // 난이도별 재생 속도 체감 조절
             
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const svgData = new XMLSerializer().serializeToString(svg);
-            const img = new Image();
-            
-            img.onload = () => {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.fillStyle = 'white';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0);
-                
-                canvas.toBlob((blob) => {
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'sheet-music.png';
-                    a.click();
-                    URL.revokeObjectURL(url);
-                });
-            };
-            
-            img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+            pianoNotes.forEach((n, i) => {
+                synth.triggerAttackRelease(n.note.full.replace('/', ''), "8n", now + (i * playGap));
+            });
+            showStatus("🎹 피아노 재생 중...");
         });
-        
-        function showStatus(message, isError = false) {
-            statusDiv.textContent = message;
-            statusDiv.style.background = isError ? '#ffebee' : '#f0f1ff';
-            statusDiv.style.color = isError ? '#c62828' : '#333';
-            statusDiv.classList.add('show');
-        }
-        
-        function updateProgress(percent) {
-            progressFill.style.width = percent + '%';
-        }
+
+        pdfBtn.addEventListener('click', async () => {
+            const { jsPDF } = window.jspdf;
+            showStatus("📄 PDF 생성 중...");
+            try {
+                const canvas = await html2canvas(sheetMusicDiv, { scale: 2, backgroundColor: "#ffffff" });
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgWidth = 210;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= 297;
+                while (heightLeft > 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= 297;
+                }
+                pdf.save(`${document.getElementById('sheetTitle').value || 'Sheet'}.pdf`);
+                showStatus("✅ PDF 저장 완료!");
+            } catch (e) { showStatus("❌ PDF 저장 실패", true); }
+        });
+
+        function showStatus(msg, err) { statusDiv.textContent = msg; statusDiv.style.background = err ? "#ffebee" : "#f0f1ff"; statusDiv.classList.add('show'); }
+        function updateProgress(p) { progressFill.style.width = p + '%'; }
+        document.getElementById('sensitivity').addEventListener('input', e => document.getElementById('sensitivityValue').textContent = e.target.value);
     </script>
 </body>
 </html>
